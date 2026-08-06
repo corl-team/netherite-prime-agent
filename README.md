@@ -23,6 +23,20 @@ experiments: about 700 lines of Python and shell.
 | `patches/` | The engine-side changes this bridge needs, described in prose. |
 | `examples/` | `NOTES.md` and `tools.py` as the agent wrote them for itself over three episodes. |
 
+## Where the Prime Agent side is
+
+Deliberately thin. The agent plays from its own IPython kernel by importing
+these modules, so there are only three touch points:
+
+- `agent/play.sh` and `agent/learn.sh` invoke the CLI:
+  `prime-agent --cwd agent -nc -ns -ne --skill .../refine --skill .../attach-image -p "<brief>"`.
+  The three `-n*` flags drop context files, discovered skills and extensions so
+  a run is reproducible; the two skills are added back explicitly.
+- `Game.attach()` / `Bridge.show()` publish
+  `application/vnd.prime-agent.attachment+json` from the kernel, which is how a
+  rendered frame reaches a vision model's context.
+- Everything else is the model writing Python against `mcbridge` / `mcagent`.
+
 ## Requirements
 
 1. **netherite**, built: clone `Infatoshi/netherite`, run its bootstrap (it
