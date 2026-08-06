@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+# episode dumps: frames, observations, recorded actions
+frames/
+out/
+workspace/
+*.ppm
+*.mp4
