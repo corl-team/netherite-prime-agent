@@ -59,6 +59,7 @@ def replay(actions_path, out_dir, seed=0, mobs=False, start=0, end=None,
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("frames_dir", help="episode dir holding actions.jsonl")
+    ap.add_argument("--actions", help="action log path, if not <frames_dir>/actions.jsonl")
     ap.add_argument("out_dir")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--mobs", action="store_true")
@@ -69,7 +70,7 @@ def main():
     ap.add_argument("--every", type=int, default=1)
     ap.add_argument("--view-distance", type=int, default=None)
     a = ap.parse_args()
-    acts = os.path.join(a.frames_dir, "actions.jsonl")
+    acts = a.actions or os.path.join(a.frames_dir, "actions.jsonl")
     if not os.path.exists(acts):
         raise SystemExit(f"{acts} not found - that episode predates action "
                          "recording, or ran without frames_dir")
